@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:domain": "next dev -H 0.0.0.0 -p 3000",
+    "dev:test": "next dev -H 127.0.0.1 -p 3789",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
