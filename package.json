@@ -2,11 +2,13 @@
   "name": "temporary-childcare-mvp",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@11.7.0",
   "scripts": {
     "dev": "next dev",
     "dev:domain": "next dev -H 0.0.0.0 -p 3000",
     "dev:test": "next dev -H 127.0.0.1 -p 3789",
     "build": "next build",
+    "build:pages": "GITHUB_PAGES=true next build",
     "start": "next start",
     "lint": "next lint"
   },

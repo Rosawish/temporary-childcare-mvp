@@ -207,6 +207,18 @@ http://temporary-childcare.localhost:3000/parent/login
 http://localhost:3000/parent/login
 ```
 
+GitHub Pages：
+
+```text
+https://rosawish.github.io/temporary-childcare-mvp/
+```
+
+GitHub Pages 使用 static export，base path 為 `/temporary-childcare-mvp/`。本專案的 GitHub Pages build 指令：
+
+```bash
+pnpm build:pages
+```
+
 家長 Demo 帳號：
 
 ```text

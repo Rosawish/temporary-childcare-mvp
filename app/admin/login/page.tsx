@@ -12,16 +12,26 @@ export default function AdminLoginPage() {
 
   async function submit() {
     setError("");
-    const response = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-    if (!response.ok) {
-      setError("請使用 admin@example.com / password123");
+    if (email === "admin@example.com" && password === "password123") {
+      window.localStorage.setItem("temporary-childcare-admin", "admin-demo");
+      router.push("/admin/dashboard");
       return;
     }
-    router.push("/admin/dashboard");
+
+    try {
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!response.ok) {
+        setError("請使用 admin@example.com / password123");
+        return;
+      }
+      router.push("/admin/dashboard");
+    } catch {
+      setError("請使用 admin@example.com / password123");
+    }
   }
 
   return (

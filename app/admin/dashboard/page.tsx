@@ -10,7 +10,9 @@ import { DateRangeFilter } from "@/components/admin/dashboard/DateRangeFilter";
 import { KpiCard } from "@/components/admin/dashboard/KpiCard";
 import { MetricSection } from "@/components/admin/dashboard/MetricSection";
 import { RecentBookingsTable } from "@/components/admin/dashboard/RecentBookingsTable";
+import { getActionItems, getBookingTrend, getOverviewMetrics, getRecentBookings, getRevenueTrend, getStatusDistribution, getTopCenters } from "@/lib/admin/dashboardMetrics";
 import { formatMoney, formatNumber, formatPercent } from "@/lib/admin/format";
+import { seedData } from "@/lib/mockData";
 
 type Overview = Awaited<ReturnType<typeof fetchOverviewShape>>;
 type LoadState = {
@@ -47,19 +49,13 @@ export default function AdminDashboardPage() {
     setLoading(true);
     setError("");
     try {
-      const endpoints = [
-        "/api/admin/dashboard/overview",
-        `/api/admin/dashboard/revenue-trend?months=${months}`,
-        `/api/admin/dashboard/booking-trend?months=${months}`,
-        "/api/admin/dashboard/top-centers?limit=10",
-        "/api/admin/dashboard/status-distribution",
-        "/api/admin/dashboard/action-items",
-        "/api/admin/dashboard/recent-bookings?limit=10"
-      ];
-      const responses = await Promise.all(endpoints.map((endpoint) => fetch(endpoint)));
-      const failed = responses.find((response) => !response.ok);
-      if (failed) throw new Error(failed.status === 401 ? "請先登入管理員帳號" : failed.status === 403 ? "目前帳號沒有管理員權限" : "Dashboard API 載入失敗");
-      const [overview, revenueTrend, bookingTrend, topCenters, distributions, actionItems, recentBookings] = await Promise.all(responses.map((response) => response.json()));
+      const overview = getOverviewMetrics(seedData);
+      const revenueTrend = getRevenueTrend(seedData, months);
+      const bookingTrend = getBookingTrend(seedData, months);
+      const topCenters = getTopCenters(seedData, 10);
+      const distributions = getStatusDistribution(seedData);
+      const actionItems = getActionItems(seedData);
+      const recentBookings = getRecentBookings(seedData, 10);
       setState({ overview, revenueTrend, bookingTrend, topCenters, distributions, actionItems, recentBookings });
       setUpdatedAt(new Date().toLocaleString("zh-TW", { hour12: false }));
     } catch (err) {
